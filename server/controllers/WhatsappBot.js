@@ -31,8 +31,8 @@ class WhatsappBot {
 
   static async googleSearch(req, res, next) {
 console.log(rota);
-if (rota == undefined) {
     const twiml = new MessagingResponse();
+if (rota == undefined) {
     const q = req.body.Body;
 
     try {
@@ -54,12 +54,19 @@ if (rota == undefined) {
     }
   }
 else{
-    console.log(req.body);
-    if (!req.body.hasOwnProperty('Latitude')) {
-        twiml.message(`pf partilhe a sua localizacao`)
+    const q = req.body
+    if (q.Latitude == undefined) {
+        const client = require('twilio')(accountSid, TwilloAuthToken);
+        client.messages
+            .create({
+            from: 'whatsapp:+14155238886',
+            body: `pf partilhe a sua localizacao`,
+            to: q.From
+        })
+        console.log(q)
         }
     else {
-        model = {
+       var model = {
             tel: req.body.From,
             rota: rota,
             lat: req.body.Latitude,

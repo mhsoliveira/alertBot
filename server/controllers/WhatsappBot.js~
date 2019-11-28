@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import twilio from 'twilio';
 dotenv.config();
 
+var rota;
 const {
   SID: accountSid,
   KEY: TwilloAuthToken,
@@ -26,12 +27,13 @@ class WhatsappBot {
    * @param {object} next - Error handler
    * @returns {object} - object representing response message
    */
-rota = Number;
-if (rota == null) {
+
+
   static async googleSearch(req, res, next) {
+console.log(rota);
+if (rota == undefined) {
     const twiml = new MessagingResponse();
     const q = req.body.Body;
-    console.log(req.body);
 
     try {
 
@@ -40,7 +42,8 @@ if (rota == null) {
         twiml.message(`pf digite o numero da sua linha`);
         }
       else {
-        route = q;
+        rota = q;
+        twiml.message(`pf partilhe a sua localizacao`)
         }
 
       res.set('Content-Type', 'text/xml');
@@ -50,7 +53,23 @@ if (rota == null) {
       return next(error);
     }
   }
- }
+else{
+    console.log(req.body);
+    if (!req.body.hasOwnProperty('Latitude')) {
+        twiml.message(`pf partilhe a sua localizacao`)
+        }
+    else {
+        model = {
+            tel: req.body.From,
+            rota: rota,
+            lat: req.body.Latitude,
+            long: req.body.Longitude,
+            hora: Date.now()
+        }
+    console.log(model)
+    }
+    }
+}
 }
 
 export default WhatsappBot;
